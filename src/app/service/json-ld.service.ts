@@ -50,7 +50,7 @@ export const unipinLD = [
   providedIn: 'root'
 })
 export class JsonLDService {
-  static scriptType = 'application/json+ld';
+  static scriptType = 'application/ld+json';
 
   constructor(@Inject(DOCUMENT) private _document: Document) { }
 
