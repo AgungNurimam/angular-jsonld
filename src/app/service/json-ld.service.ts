@@ -64,7 +64,7 @@ export class JsonLDService {
 
   insertSchema(className = 'structured-data'): void {
     console.log('XXX Insert Schema');
-    let script;
+    let script: any;
     let shouldAppend = false;
     if (this._document.head.getElementsByClassName(className).length) {
       script = this._document.head.getElementsByClassName(className)[0];
@@ -72,9 +72,9 @@ export class JsonLDService {
       script = this._document.createElement('script');
       shouldAppend = true;
     }
-    // script.setAttribute('class', className);
-    // script.type = JsonLDService.scriptType;
-    // script.text = JSON.stringify(unipinLD);
+    script.setAttribute('class', className);
+    script.type = JsonLDService.scriptType;
+    script.text = JSON.stringify(unipinLD);
     if (shouldAppend) {
       this._document.head.appendChild(script);
     }
