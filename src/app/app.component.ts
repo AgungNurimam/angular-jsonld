@@ -16,6 +16,6 @@ export class AppComponent implements OnInit{
 
   ngOnInit() {
     this.jsonLdService.removeStructuredData();
-		this.jsonLdService.insertSchema();
+    this.jsonLdService.getSchema();
   }
 }

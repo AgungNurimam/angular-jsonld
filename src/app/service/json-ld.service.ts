@@ -1,49 +1,36 @@
 import { DOCUMENT } from '@angular/common';
 import { Inject, Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 
 export const unipinLD = [
-	{
-		"@context": "https://schema.org",
-		"@type": "WebSite",
-		"name": "UniPin",
-		"url": "https://www.unipin.com",
-		"description": "Unipin Is..........",
-		"sameAs": [
-			"https://www.facebook.com/UniPin",
-			"https://twitter.com/unipinindonesia",
-			"https://www.tiktok.com/@unipin",
-			"https://www.youtube.com/channel/UClINXntvfPr_44coZpObmDA"
-		]
-	},
-	{
-		"@context": "https://schema.org",
-		"@type": "NewsArticle",
-		"mainEntityOfPage": {
-			"@type": "WebPage",
-			"@id": "https://www.unipin.com/article"
-		},
-		"headline": "Latest from Unipin",
-		"image": [
-			"https://example.com/photos/1x1/photo.jpg",
-			"https://example.com/photos/4x3/photo.jpg",
-			"https://example.com/photos/16x9/photo.jpg"
-		],
-		"datePublished": "2015-02-05T08:00:00+08:00",
-		"dateModified": "2015-02-05T09:20:00+08:00",
-		"author": {
-			"@type": "Person",
-			"name": "John Doe",
-			"url": "http://example.com/profile/johndoe123"
-		},
-		"publisher": {
-			"@type": "Organization",
-			"name": "Unipin",
-			"logo": {
-				"@type": "ImageObject",
-				"url": "https://google.com/logo.jpg"
-			}
-		}
-	}
+  {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "breadcrumb": "Books > Marketing > JSON",
+    "mainEntity": {
+      "@type": "Book",
+      "author": "http://www.example.com/author.html",
+      "bookFormat": "http://schema.org/EBook",
+      "datePublished": "2015-05-01",
+      "image": "coverImage.jpg",
+      "inLanguage": "English",
+      "isbn": "00000000",
+      "name": "The Title of Book",
+      "numberOfPages": "1234",
+      "offers": {
+        "@type": "Offer",
+        "availability": "http://schema.org/InStock",
+        "price": "9.99",
+        "priceCurrency": "USD"
+      },
+      "publisher": "O'Json Publishing",
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "4",
+        "reviewCount": "12"
+      }
+    }
+  }
 ]
 
 @Injectable({
@@ -52,7 +39,10 @@ export const unipinLD = [
 export class JsonLDService {
   static scriptType = 'application/ld+json';
 
-  constructor(@Inject(DOCUMENT) private _document: Document) { }
+  constructor(
+    @Inject(DOCUMENT) private _document: Document,
+    private http: HttpClient
+  ) { }
 
   removeStructuredData(): void {
     const els: Element[] = [];
@@ -62,7 +52,7 @@ export class JsonLDService {
     els.forEach(el => this._document.head.removeChild(el));
   }
 
-  insertSchema(className = 'structured-data'): void {
+  insertSchema(className = 'structured-data', json: any): void {
     console.log('XXX Insert Schema');
     let script: any;
     let shouldAppend = false;
@@ -78,5 +68,13 @@ export class JsonLDService {
     if (shouldAppend) {
       this._document.head.appendChild(script);
     }
+  }
+
+  getSchema(): void {
+    let apiUrl = 'https://agungnurimam.github.io/json-scheme/test-json.json';
+
+    this.http.get<any>(apiUrl).subscribe(data => {
+      this.insertSchema('structured-data', data);
+    })
   }
 }
