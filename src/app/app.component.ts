@@ -8,19 +8,14 @@ import { Subscription } from 'rxjs';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent implements OnInit {
+export class AppComponent {
   title = 'angular-jsonld';
 
 
   constructor(
     protected readonly jsonLdService: JsonLDService,
     protected readonly platform: Platform
-  ) { }
-
-  ngOnInit() {
-    this.jsonLdService.removeStructuredData();
-    this.jsonLdService.getSchema();
-  }
+  ) { this.initializeApp() }
 
   protected async initializeApp(): Promise<void> {
     this.platform.ready().then(async () => {
