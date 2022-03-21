@@ -1,38 +1,6 @@
 import { DOCUMENT } from '@angular/common';
 import { Inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-
-export const unipinLD = [
-  {
-    "@context": "https://schema.org",
-    "@type": "WebPage",
-    "breadcrumb": "Books > Marketing > JSON",
-    "mainEntity": {
-      "@type": "Book",
-      "author": "http://www.example.com/author.html",
-      "bookFormat": "http://schema.org/EBook",
-      "datePublished": "2015-05-01",
-      "image": "coverImage.jpg",
-      "inLanguage": "English",
-      "isbn": "00000000",
-      "name": "The Title of Book",
-      "numberOfPages": "1234",
-      "offers": {
-        "@type": "Offer",
-        "availability": "http://schema.org/InStock",
-        "price": "9.99",
-        "priceCurrency": "USD"
-      },
-      "publisher": "O'Json Publishing",
-      "aggregateRating": {
-        "@type": "AggregateRating",
-        "ratingValue": "4",
-        "reviewCount": "12"
-      }
-    }
-  }
-]
-
 @Injectable({
   providedIn: 'root'
 })
@@ -64,7 +32,7 @@ export class JsonLDService {
     }
     script.setAttribute('class', className);
     script.type = JsonLDService.scriptType;
-    script.text = JSON.stringify(unipinLD);
+    script.text = json;
     if (shouldAppend) {
       this._document.head.appendChild(script);
     }
@@ -73,7 +41,7 @@ export class JsonLDService {
   getSchema(): void {
     let apiUrl = 'https://agungnurimam.github.io/json-scheme/test-json.json';
 
-    this.http.get<any>(apiUrl).subscribe(data => {
+    this.http.get(apiUrl, {responseType: 'text'}).subscribe(data => {
       this.insertSchema('structured-data', data);
     })
   }
