@@ -32,7 +32,7 @@ export class JsonLDService {
     }
     script.setAttribute('class', className);
     script.type = JsonLDService.scriptType;
-    script.text = json;
+    script.text = JSON.stringify(json);
     if (shouldAppend) {
       this._document.head.appendChild(script);
     }
